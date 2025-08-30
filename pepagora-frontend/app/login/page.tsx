@@ -7,14 +7,6 @@ import axiosInstance from '@/lib/axiosInstance';
 import { saveToken } from '@/lib/auth';
 import Dashboard from '../dashboard/page';
 
-
-// type user ={
-//   email:string,
-//   _id:string,
-//   username:string,
-//   role:string
-// }
-
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

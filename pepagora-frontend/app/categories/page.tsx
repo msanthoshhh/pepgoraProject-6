@@ -73,20 +73,34 @@ export default function CategoriesPage() {
   const router = useRouter();
 
   // ---- Effects ----
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem('accessToken');
+  //   if (storedToken) {
+  //     try {
+  //       const decoded: TokenPayload = jwtDecode(storedToken);
+  //       setUserRole(decoded.role);
+  //     } catch (err) {
+  //       console.error('Invalid token:', err);
+  //       router.push('/login');
+  //     }
+  //   } else {
+  //     router.push('/login');
+  //   }
+  // }, [router]);
   useEffect(() => {
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedToken) {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
       try {
-        const decoded: TokenPayload = jwtDecode(storedToken);
+        const decoded: TokenPayload = jwtDecode(token);
         setUserRole(decoded.role);
-      } catch (err) {
-        console.error('Invalid token:', err);
-        router.push('/login');
+      } catch (error) {
+        console.error("Invalid token", error);
       }
-    } else {
-      router.push('/login');
     }
-  }, [router]);
+  }
+}, []);
+
 
   useEffect(() => {
     fetchCategories(page);

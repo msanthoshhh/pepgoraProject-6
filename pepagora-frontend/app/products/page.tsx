@@ -1,5 +1,5 @@
 'use client';
-
+export const dynamic = "force-dynamic";
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
@@ -117,10 +117,14 @@ export default function ProductsPage() {
   const [formDescription, setFormDescription] = useState('');
 
 
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
+    // const [token, setToken] = useState<string | null>(null);
+    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
-  const categoryId = searchParams.get("category");
-  const subcategoryId = searchParams.get("subcategory");
+
+
+  // const categoryId = searchParams.get("category");
+  // const subcategoryId = searchParams.get("subcategory");
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [subcategoriesLoading, setSubcategoriesLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
@@ -147,17 +151,31 @@ export default function ProductsPage() {
 
 
   // helpers
+  // useEffect(() => {
+  //   const stored = localStorage.getItem('accessToken');
+  //   if (stored) {
+  //     try {
+  //       const decoded: TokenPayload = jwtDecode(stored);
+  //       setUserRole(decoded.role);
+  //     } catch {
+  //       router.push('/login');
+  //     }
+  //   }
+  // }, [router]);
   useEffect(() => {
-    const stored = localStorage.getItem('accessToken');
-    if (stored) {
+  if (typeof window !== "undefined") {
+    // const token = localStorage.getItem("accessToken");
+    if (token) {
       try {
-        const decoded: TokenPayload = jwtDecode(stored);
+        const decoded: TokenPayload = jwtDecode(token);
         setUserRole(decoded.role);
       } catch {
-        router.push('/login');
+        console.error("Invalid token");
       }
     }
-  }, [router]);
+  }
+}, []);
+
 
   // fetch subcategories for dropdown
   useEffect(()=>{
